@@ -1,0 +1,33 @@
+name: Build
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      - uses: acifani/setup-tinygo@v2
+        with:
+          tinygo-version: '0.39.0'
+
+      - name: Test
+        run: make test
+
+      - name: Build plugin
+        run: make build
+
+      - uses: actions/upload-artifact@v5
+        with:
+          name: navidrome-wrapped
+          path: navidrome-wrapped.ndp
+          if-no-files-found: error
