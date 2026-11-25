@@ -96,7 +96,7 @@ To build against a different Navidrome release, set `NAVIDROME_REF`. For example
 
 ### Versioning
 
-The plugin version shown in Navidrome comes from git tags. Building a commit tagged `v1.2.3` produces version `1.2.3`. Any other commit builds as `0.0.0-dev+<commit>`. To set it by hand, use `make VERSION=1.2.3`. To release, create a GitHub release with a new `v1.2.3` tag. Publishing it triggers CI, which builds the versioned `.ndp` and attaches it to the release.
+The plugin version shown in Navidrome comes from git tags. Building a commit tagged `v1.2.3` produces version `1.2.3`. Any other commit builds as `0.0.0-dev+<commit>`. To set it by hand, use `make VERSION=1.2.3`. To release, push a tag (`git tag v1.2.3 && git push origin v1.2.3`) and CI builds the versioned `.ndp` and publishes it as a GitHub release.
 
 ### Layout
 

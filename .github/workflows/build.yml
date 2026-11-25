@@ -3,16 +3,15 @@ name: Build
 on:
   push:
     branches: [main, master]
+    tags: ['v*']
   pull_request:
-  release:
-    types: [published]
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # attach the plugin to releases
+      contents: write # create releases on tag pushes
     steps:
       - uses: actions/checkout@v7
 
@@ -28,8 +27,8 @@ jobs:
         run: make test
 
       - name: Build plugin
-        # release v1.2.3 -> version 1.2.3; anything else is a 0.0.0-dev+<commit> build
-        run: make build VERSION=${{ github.event_name == 'release' && github.event.release.tag_name || '' }}
+        # v1.2.3 tag -> version 1.2.3; anything else is a 0.0.0-dev+<commit> build
+        run: make build VERSION=${{ github.ref_type == 'tag' && github.ref_name || '' }}
 
       - uses: actions/upload-artifact@v7
         with:
@@ -37,9 +36,8 @@ jobs:
           path: navidrome-wrapped.ndp
           if-no-files-found: error
 
-      - name: Attach to release
-        if: github.event_name == 'release'
+      - name: Publish release
+        if: github.ref_type == 'tag'
         env:
           GH_TOKEN: ${{ github.token }}
-        # --clobber replaces the file if the release already has one (e.g. a re-run)
-        run: gh release upload "${{ github.event.release.tag_name }}" navidrome-wrapped.ndp --clobber
+        run: gh release create "$GITHUB_REF_NAME" navidrome-wrapped.ndp --title "$GITHUB_REF_NAME" --generate-notes --verify-tag
