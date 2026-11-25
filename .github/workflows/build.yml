@@ -6,6 +6,12 @@ on:
     tags: ['v*']
   pull_request:
   workflow_dispatch:
+  workflow_call: # used by release.yml
+    inputs:
+      version:
+        description: Version tag to build, e.g. v1.2.3
+        type: string
+        required: true
 
 jobs:
   build:
@@ -28,7 +34,7 @@ jobs:
 
       - name: Build plugin
         # v1.2.3 tag -> version 1.2.3; anything else is a 0.0.0-dev+<commit> build
-        run: make build VERSION=${{ github.ref_type == 'tag' && github.ref_name || '' }}
+        run: make build VERSION=${{ inputs.version || (github.ref_type == 'tag' && github.ref_name) || '' }}
 
       - uses: actions/upload-artifact@v7
         with:
