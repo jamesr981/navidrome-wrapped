@@ -1,6 +1,6 @@
 module github.com/example/navidrome-wrapped
 
-go 1.24
+go 1.25
 
 require github.com/navidrome/navidrome/plugins/pdk/go v0.0.0
 
