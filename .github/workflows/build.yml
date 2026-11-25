@@ -18,7 +18,7 @@ jobs:
 
       - uses: acifani/setup-tinygo@v3
         with:
-          tinygo-version: '0.39.0'
+          tinygo-version: '0.44.0'
 
       - name: Test
         run: make test
