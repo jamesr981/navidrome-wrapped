@@ -3,6 +3,7 @@ name: Build
 on:
   push:
     branches: [main, master]
+    tags: ['v*']
   pull_request:
   workflow_dispatch:
 
@@ -24,7 +25,8 @@ jobs:
         run: make test
 
       - name: Build plugin
-        run: make build
+        # v1.2.3 tag -> version 1.2.3; anything else is a 0.0.0-dev+<commit> build
+        run: make build VERSION=${{ github.ref_type == 'tag' && github.ref_name || '' }}
 
       - uses: actions/upload-artifact@v7
         with:

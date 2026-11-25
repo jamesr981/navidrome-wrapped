@@ -85,7 +85,7 @@ wrapped.example.com {
 
 ## Building from source
 
-You need [TinyGo](https://tinygo.org) 0.39+ and Go 1.25+.
+You need [TinyGo](https://tinygo.org) 0.44+ and Go 1.27+.
 
 ```sh
 make          # fetches the Navidrome PDK (pinned to v0.64.2), builds plugin.wasm, packages navidrome-wrapped.ndp
@@ -93,6 +93,10 @@ make test     # unit tests for the stats engine
 ```
 
 To build against a different Navidrome release, set `NAVIDROME_REF`. For example, `make NAVIDROME_REF=v0.65.0`.
+
+### Versioning
+
+The plugin version shown in Navidrome comes from git tags. Building a commit tagged `v1.2.3` produces version `1.2.3`. Any other commit builds as `0.0.0-dev+<commit>`. To set it by hand, use `make VERSION=1.2.3`. To release, push a tag (`git tag v1.2.3 && git push origin v1.2.3`) and CI builds the versioned `.ndp`.
 
 ### Layout
 

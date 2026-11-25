@@ -28,6 +28,9 @@ const (
 	topN                = 5
 )
 
+// version is set at build time by the Makefile (-ldflags "-X main.version=...")
+var version = "0.0.0-dev"
+
 type wrappedPlugin struct{}
 
 func init() {
@@ -114,6 +117,7 @@ func loadConfig() config {
 
 func (p *wrappedPlugin) OnInit() error {
 	c := loadConfig()
+	logInfo("Navidrome Wrapped " + version)
 	_ = host.SchedulerCancelSchedule(recurringScheduleID)
 	if c.Schedule != "" {
 		if _, err := host.SchedulerScheduleRecurring(c.Schedule, "run", recurringScheduleID); err != nil {
