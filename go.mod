@@ -1,0 +1,17 @@
+module github.com/example/navidrome-wrapped
+
+go 1.24
+
+require github.com/navidrome/navidrome/plugins/pdk/go v0.0.0
+
+require (
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/extism/go-pdk v1.1.3 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/stretchr/objx v0.5.2 // indirect
+	github.com/stretchr/testify v1.11.1 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
+)
+
+// The PDK is not published as a tagged module; `make pdk` fetches it at a pinned Navidrome release.
+replace github.com/navidrome/navidrome/plugins/pdk/go => ./.pdk/plugins/pdk/go

@@ -1,0 +1,4 @@
+.pdk/
+plugin.wasm
+*.ndp
+.idea/

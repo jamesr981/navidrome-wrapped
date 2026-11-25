@@ -1,0 +1,121 @@
+{
+  "name": "Navidrome Wrapped",
+  "author": "Navidrome Wrapped contributors",
+  "version": "1.0.0",
+  "description": "Your year in music, Spotify Wrapped style. Builds each user's yearly listening stats from Navidrome's own scrobble history, creates a 'Wrapped · Top Songs' playlist that shows up in every Subsonic client, and writes an animated story page per user.",
+  "website": "https://github.com/example/navidrome-wrapped",
+  "config": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "year": {
+          "type": "integer",
+          "title": "Year",
+          "description": "Year to wrap. 0 = automatic (the current year, or last year when run in January).",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 2100
+        },
+        "timezone": {
+          "type": "string",
+          "title": "Timezone",
+          "description": "IANA timezone used for year boundaries, the listening clock and daily streaks (e.g. Australia/Melbourne, America/New_York).",
+          "default": "UTC"
+        },
+        "schedule": {
+          "type": "string",
+          "title": "Schedule (cron)",
+          "description": "When to generate Wrapped automatically. Default: 06:00 on 1 December. Leave empty to disable.",
+          "default": "0 6 1 12 *"
+        },
+        "generateOnLoad": {
+          "type": "boolean",
+          "title": "Generate now",
+          "description": "Generate Wrapped shortly after the plugin is loaded or its settings are saved. Turn on and save to run it right away.",
+          "default": false
+        },
+        "minPlays": {
+          "type": "integer",
+          "title": "Minimum plays",
+          "description": "Users with fewer plays than this in the year are skipped.",
+          "default": 25,
+          "minimum": 1
+        },
+        "createPlaylist": {
+          "type": "boolean",
+          "title": "Create Top Songs playlist",
+          "description": "Create (or replace) a private 'Wrapped <year> · Top Songs' playlist for each user.",
+          "default": true
+        },
+        "playlistSize": {
+          "type": "integer",
+          "title": "Playlist size",
+          "description": "Number of tracks in the Top Songs playlist.",
+          "default": 50,
+          "minimum": 5,
+          "maximum": 200
+        },
+        "embedArtwork": {
+          "type": "boolean",
+          "title": "Embed artwork in story pages",
+          "description": "Embed album and artist images in the HTML story pages so they work as standalone files.",
+          "default": true
+        }
+      }
+    },
+    "uiSchema": {
+      "type": "VerticalLayout",
+      "elements": [
+        {
+          "type": "HorizontalLayout",
+          "elements": [
+            { "type": "Control", "scope": "#/properties/year" },
+            { "type": "Control", "scope": "#/properties/timezone" }
+          ]
+        },
+        {
+          "type": "HorizontalLayout",
+          "elements": [
+            { "type": "Control", "scope": "#/properties/schedule" },
+            { "type": "Control", "scope": "#/properties/generateOnLoad" }
+          ]
+        },
+        {
+          "type": "HorizontalLayout",
+          "elements": [
+            { "type": "Control", "scope": "#/properties/createPlaylist" },
+            { "type": "Control", "scope": "#/properties/playlistSize" }
+          ]
+        },
+        {
+          "type": "HorizontalLayout",
+          "elements": [
+            { "type": "Control", "scope": "#/properties/minPlays" },
+            { "type": "Control", "scope": "#/properties/embedArtwork" }
+          ]
+        }
+      ]
+    }
+  },
+  "permissions": {
+    "users": {
+      "reason": "Generate a Wrapped for each user you allow this plugin to access"
+    },
+    "scrobbleRetriever": {
+      "reason": "Read each user's play history for the year"
+    },
+    "subsonicapi": {
+      "reason": "Look up track details, fetch cover art and create the Top Songs playlist"
+    },
+    "scheduler": {
+      "reason": "Run the yearly Wrapped generation on a schedule"
+    },
+    "kvstore": {
+      "reason": "Remember generated playlist IDs and the last run summary",
+      "maxSize": "1MB"
+    },
+    "storage": {
+      "reason": "Write the per-user Wrapped story pages and JSON stats"
+    }
+  }
+}
