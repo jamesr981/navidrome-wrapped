@@ -10,6 +10,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # create releases on tag pushes
     steps:
       - uses: actions/checkout@v7
 
@@ -33,3 +35,9 @@ jobs:
           name: navidrome-wrapped
           path: navidrome-wrapped.ndp
           if-no-files-found: error
+
+      - name: Publish release
+        if: github.ref_type == 'tag'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" navidrome-wrapped.ndp --title "$GITHUB_REF_NAME" --generate-notes --verify-tag
